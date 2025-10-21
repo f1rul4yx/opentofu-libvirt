@@ -42,6 +42,12 @@ resource "libvirt_domain" "server1" {
     wait_for_lease = true
   }
 
+  # Red 3: Red nat 2
+  network_interface {
+    network_id     = libvirt_network.nat-dhcp2.id
+    wait_for_lease = true
+  }
+
   disk { volume_id = libvirt_volume.server1-disk.id }
   # Segundo disco
   disk { volume_id = libvirt_volume.disk-extra1.id }
