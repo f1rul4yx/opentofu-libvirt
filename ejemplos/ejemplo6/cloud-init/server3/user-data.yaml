@@ -1,5 +1,5 @@
 #cloud-config
-hostname: server2
+hostname: server3
 users:
   - name: ubuntu
     sudo: ALL=(ALL) NOPASSWD:ALL

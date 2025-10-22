@@ -26,8 +26,18 @@ locals {
       bridge    = "virbr14"
       autostart = true
     }
-  }
 
+    nat-dhcp2 = {
+      name      = "nat-dhcp2"
+      mode      = "nat"
+      domain    = "example.com"
+      addresses = ["192.168.101.0/24"]
+      bridge    = "virbr11"
+      dhcp      = true
+      dns       = true
+      autostart = true
+    }
+  }
   ##############################################
   # Máquinas virtuales a crear
   ##############################################
@@ -64,6 +74,21 @@ locals {
 
       user_data      = "${path.module}/cloud-init/server2/user-data.yaml"
       network_config = "${path.module}/cloud-init/server2/network-config.yaml"
+    }
+
+    server3 = {
+      name       = "server3"
+      memory     = 1024
+      vcpu       = 2
+      base_image = "ubuntu2404-base.qcow2"
+
+      networks = [
+        { network_name = "nat-dhcp2", wait_for_lease = true },
+        { network_name = "muy-aislada" }
+      ]
+
+      user_data      = "${path.module}/cloud-init/server3/user-data.yaml"
+      network_config = "${path.module}/cloud-init/server3/network-config.yaml"
     }
   }
 }
