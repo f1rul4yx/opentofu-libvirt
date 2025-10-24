@@ -1,15 +1,15 @@
 # Clon ligero (backing store)
 # El disco resultante apunta al volumen base y solo guarda cambios diferenciales
 resource "libvirt_volume" "server1-disk" {
-  name           = "dvargom-linked.qcow2"
+  name           = "server1-linked.qcow2"
   pool           = var.libvirt_pool_name
-  base_volume_id = "${var.libvirt_pool_path}/ubuntu2404-base.qcow2"
+  base_volume_id = "${var.libvirt_pool_path}/debian13-base.qcow2"
   format         = "qcow2"
 }
 
 # Disco cloud-init con configuración del sistema
 resource "libvirt_cloudinit_disk" "server1-cloudinit" {
-  name           = "dvargom-cloudinit.iso"
+  name           = "server1-cloudinit.iso"
   pool           = var.libvirt_pool_name
   user_data      = join("\n", ["#cloud-config", yamlencode(local.merged)])
   network_config = ""
@@ -17,9 +17,9 @@ resource "libvirt_cloudinit_disk" "server1-cloudinit" {
 
 # Dominio (VM)
 resource "libvirt_domain" "server1" {
-  name   = "dvargom"
+  name   = "server1"
   memory = 1024
-  vcpu   = 1
+  vcpu   = 2
 
 
   network_interface {
@@ -29,4 +29,3 @@ resource "libvirt_domain" "server1" {
   disk { volume_id = libvirt_volume.server1-disk.id }
   cloudinit = libvirt_cloudinit_disk.server1-cloudinit.id
 }
-
