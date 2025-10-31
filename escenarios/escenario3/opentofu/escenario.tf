@@ -42,7 +42,7 @@ locals {
 
   servers = {
     apache2 = {
-      name       = "apache2"
+      name       = "pi-apache2"
       memory     = 1024
       vcpu       = 1
       base_image = "debian13-base.qcow2"
@@ -58,7 +58,7 @@ locals {
     }
 
     mariadb = {
-      name       = "mariadb"
+      name       = "pi-mariadb"
       memory     = 1024
       vcpu       = 1
       base_image = "ubuntu2404-base.qcow2"
